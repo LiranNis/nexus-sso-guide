@@ -1,4 +1,6 @@
-Nexus SSO Guide - WIP
+# Nexus SSO Guide - WIP
+
+## Steps
 - Install httpd  
   ```yum install httpd```
 - Edit `conf/httpd.conf` and add:  
