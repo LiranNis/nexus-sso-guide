@@ -5,8 +5,12 @@
 Login to Nexus with admin and go to Security > LDAP, and fill it with the right information.  
 My advice is to create user that will serve only this purpose, for example: Nexus-Auth
 ![Creating LDAP connection](img/ldap.PNG?raw=true "Creating LDAP connection")
+2. **HTTPD**  
+Choose the server that you want to use as your proxy and install httpd on it, I use the nexus server itself.  
+`yum install httpd` (or another package manager)
+3. **Configure HTTPD**
 
-- Install httpd  
+- Install httpd    
   ```yum install httpd```
 - Edit `conf/httpd.conf` and add:  
   ``` 
