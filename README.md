@@ -2,9 +2,13 @@
 
 ## Steps
 1. **Configure LDAP**  
-Login to Nexus with admin and go to Security > LDAP, and fill it with the right information.  
-My advice is to create user that will serve only this purpose, for example: Nexus-Auth
-![Creating LDAP connection](img/ldap.PNG?raw=true "Creating LDAP connection")
+- Login to Nexus with admin
+- go to Security > LDAP
+- fill it with the right information, my advice is to create user that will serve only this purpose, for example: Nexus-Auth  
+![Creating LDAP connection](img/ldap.PNG?raw=true "Creating LDAP connection")  
+Verify the connection and press next.  
+- customize the user and group settings, in this example I removed the Base DN and selected the `User subtree` to include the entire users in the AD, you can press `Verify user mapping` in order to check which users included in the filter.  
+![LDAP user and group settings](img/ldap2.png?raw=true "LDAP user and group settings")
 2. **HTTPD**  
 Choose the server that you want to use as your proxy and install httpd on it, I use the nexus server itself.  
 `yum install httpd` (or another package manager)
