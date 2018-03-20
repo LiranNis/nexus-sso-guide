@@ -31,7 +31,11 @@ ktpass -princ HTTP/<ServerFQDN>@<Domain> -pass * -mapuser Nexus-Auth@<Domain> -p
 - Ensure `Enable this capability` marked and insert `X-Proxy-REMOTE-USER` to the HTTP Header name
 - Click Create capability
 5. **Configure HTTPD**  
-Create `gssapi.conf` under `/etc/httpd/conf.d` with this content  
+- Install `mod_auth_gssapi`  
+```
+yum install mod_auth_gssapi
+```
+- Create `gssapi.conf` under `/etc/httpd/conf.d` with this content  
 ```
 LoadModule auth_gssapi_module modules/mod_auth_gssapi.so
 
