@@ -4,7 +4,7 @@
 1. **Configure LDAP**  
 Login to Nexus with admin and go to Security > LDAP, and fill it with the right information.  
 My advice is to create user that will serve only this purpose, for example: Nexus-Auth
-
+![Creating LDAP connection](img/ldap.PNG?raw=true "Creating LDAP connection")
 
 - Install httpd  
   ```yum install httpd```
