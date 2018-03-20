@@ -1,6 +1,11 @@
 # Nexus SSO Guide - WIP
 
 ## Steps
+1. **Configure LDAP**  
+Login to Nexus with admin and go to Security > LDAP, and fill it with the right information.  
+My advice is to create user that will serve only this purpose for example: Nexus-Auth
+
+
 - Install httpd  
   ```yum install httpd```
 - Edit `conf/httpd.conf` and add:  
