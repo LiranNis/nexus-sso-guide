@@ -29,19 +29,19 @@ ktpass -princ HTTP/<ServerFQDN>@<Domain> -pass * -mapuser Nexus-HTTP@<Domain> -p
 - Go to System > Capabilities
 - Click Create capability
 - Choose Rut Auth
-- Ensure `Enable this capability` marked and insert `X-Proxy-REMOTE-USER` to the HTTP Header name
+- Ensure `Enable this capability` marked and insert `X-Remote-User` to the HTTP Header name
 - Click Create capability
 5. **Configure HTTPD**  
 - Install `mod_auth_gssapi`  
 ```
 yum install mod_auth_gssapi
 ```
-- Create `gssapi.conf` under `/etc/httpd/conf.d` with this content  
+- Create `gssapi.conf` under `/etc/httpd/conf.d`, change the following config (https needs a bit more configuration)
 ```
 LoadModule auth_gssapi_module modules/mod_auth_gssapi.so
 
 <VirtualHost *:80>
-        ServerName centosnexus
+        ServerName <servername>
         <Location "/">
                 AuthType GSSAPI
                 AuthName "Kerberos Authentication"
@@ -52,8 +52,8 @@ LoadModule auth_gssapi_module modules/mod_auth_gssapi.so
                 RequestHeader set X-Remote-User "%{RU}e" env=RU
                 Require valid-user
                 ProxyPreserveHost on
-                ProxyPass http://centosnexus:8081
-                ProxyPassReverse http://centosnexus:8081
+                ProxyPass http://<serveraddress>:8081
+                ProxyPassReverse http://<serveraddress>:8081
         </Location>
 </VirtualHost>
 
