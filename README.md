@@ -22,6 +22,7 @@ If there is duplicate you will get an error containing the user that the SPN is 
 ```
 ktpass -princ HTTP/<ServerFQDN>@<Domain> -pass * -mapuser Nexus-Auth@<Domain> -pType KRB5_NT_PRINCIPAL -crypto all -out "C:\http.keytab"
 ```
+- Move the keytab to /etc/httpd/http.keytab in your httpd server (if you choose another location you will need to change the keytab location in the next stage)
 4. **Configure HTTPD**
 Create
 - Install httpd    
