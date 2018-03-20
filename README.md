@@ -12,8 +12,14 @@ Verify the connection and press next.
 2. **HTTPD**  
 Choose the server that you want to use as your proxy and install httpd on it, I use the nexus server itself.  
 `yum install httpd` (or another package manager)
-3. **Configure HTTPD**
-
+3. **Create HTTP keytab for nexus**
+- We will register the nexus HTTP SPN to a user, create a user for that purpose, again my advice is a new user, for example: Nexus-HTTP
+- Create the SPN  
+`setspn -S HTTP/<hostname>.<domain> <new-user>`  
+If there is duplicate you will get an error containing the user that the SPN is registered to, use:  
+`setspn -D HTTP/<hostname>.<domain> <old-user>` to delete the spn and then run the first command again.
+4. **Configure HTTPD**
+Create
 - Install httpd    
   ```yum install httpd```
 - Edit `conf/httpd.conf` and add:  
