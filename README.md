@@ -23,36 +23,37 @@ If there is duplicate you will get an error containing the user that the SPN is 
 ktpass -princ HTTP/<ServerFQDN>@<Domain> -pass * -mapuser Nexus-Auth@<Domain> -pType KRB5_NT_PRINCIPAL -crypto all -out "C:\http.keytab"
 ```
 - Move the keytab to /etc/httpd/http.keytab in your httpd server (if you choose another location you will need to change the keytab location in the next stage)
-4. **Configure HTTPD**
-Create
-- Install httpd    
-  ```yum install httpd```
-- Edit `conf/httpd.conf` and add:  
-  ``` 
-  <Location />
-  #Configure basic authentication (for testing purposes)
-  AuthType Basic
-  AuthName "Sonatype Nexus"
-  AuthBasicProvider file
-  AuthUserFile /home/test/passwd
-  Require valid-user
-  
-  # Make REMOTE_USER set by authentication available as environment variable
-  RewriteEngine on
-  RewriteCond %{REMOTE_USER} (.*)
-  RewriteRule .* - [E=ENV_REMOTE_USER:%1]
-  RequestHeader set X-Proxy-REMOTE-USER %{ENV_REMOTE_USER}e
-  
-  # Remove incoming authorization headers, Nexus users are authenticated by HTTP header
-  RequestHeader unset Authorization
-  
-  # Configure apache as a reverse proxy for Nexus
-  ProxyPreserveHost on
-  ProxyPass http://localhost:8081/nexus
-  ProxyPassReverse http://localhost:8081/nexus
-  </Location>
-  ```
-  
+4. **Create Rut Auth capability**
+- Login to nexus with admin
+- Go to System > Capabilities
+- Click Create capability
+- Choose Rut Auth
+- Ensure `Enable this capability` marked and insert `X-Proxy-REMOTE-USER` to the HTTP Header name
+- Click Create capability
+5. **Configure HTTPD**  
+Create `gssapi.conf` under `/etc/httpd/conf.d` with this content  
+```
+LoadModule auth_gssapi_module modules/mod_auth_gssapi.so
+
+<VirtualHost *:80>
+        ServerName centosnexus
+        <Location "/">
+                AuthType GSSAPI
+                AuthName "Kerberos Authentication"
+                GssapiCredStore keytab:/etc/httpd/http.keytab
+                RewriteEngine On
+                RewriteCond %{LA-U:REMOTE_USER}(.+(?=@))
+                RewriteRule .-[E=RU:%1]
+                RequestHeader set X-Remote-User "%{RU}e" env=RU
+                Require valid-user
+                ProxyPreserveHost on
+                ProxyPass http://centosnexus:8081
+                ProxyPassReverse http://centosnexus:8081
+        </Location>
+</VirtualHost>
+
+```
+
   
 ## References
 - [How to Configure Request Header Authentication in Nexus with Apache](https://support.sonatype.com/hc/en-us/articles/214942368-How-to-Configure-Request-Header-Authentication-in-Nexus-with-Apache)
