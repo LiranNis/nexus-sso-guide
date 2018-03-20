@@ -18,6 +18,10 @@ Choose the server that you want to use as your proxy and install httpd on it, I 
 `setspn -S HTTP/<hostname>.<domain> <new-user>`  
 If there is duplicate you will get an error containing the user that the SPN is registered to, use:  
 `setspn -D HTTP/<hostname>.<domain> <old-user>` to delete the spn and then run the first command again.
+- Create keytab - to create the keytab run the following command on Windows machine and enter your password
+```
+ktpass -princ HTTP/<ServerFQDN>@<Domain> -pass * -mapuser Nexus-Auth@<Domain> -pType KRB5_NT_PRINCIPAL -crypto all -out "C:\http.keytab"
+```
 4. **Configure HTTPD**
 Create
 - Install httpd    
