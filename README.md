@@ -20,7 +20,7 @@ If there is duplicate you will get an error containing the user that the SPN is 
 `setspn -D HTTP/<hostname>.<domain> <old-user>` to delete the spn and then run the first command again.
 - Create keytab - to create the keytab run the following command on Windows machine and enter your password
 ```
-ktpass -princ HTTP/<ServerFQDN>@<Domain> -pass * -mapuser Nexus-Auth@<Domain> -pType KRB5_NT_PRINCIPAL -crypto all -out "C:\http.keytab"
+ktpass -princ HTTP/<ServerFQDN>@<Domain> -pass * -mapuser Nexus-HTTP@<Domain> -pType KRB5_NT_PRINCIPAL -crypto all -out "C:\http.keytab"
 ```
 - Move the keytab to /etc/httpd/http.keytab in your httpd server (if you choose another location you will need to change the keytab location in the next stage)
 4. **Create Rut Auth capability**
