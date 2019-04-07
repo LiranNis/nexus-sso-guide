@@ -43,14 +43,16 @@ LoadModule auth_gssapi_module modules/mod_auth_gssapi.so
 <VirtualHost *:80>
         ServerName <servername>
         <Location "/">
-                AuthType GSSAPI
-                AuthName "Kerberos Authentication"
-                GssapiCredStore keytab:/etc/httpd/http.keytab
-                RewriteEngine On
-                RewriteCond %{LA-U:REMOTE_USER}(.+(?=@))
-                RewriteRule .-[E=RU:%1]
-                RequestHeader set X-Remote-User "%{RU}e" env=RU
-                Require valid-user
+                <If "%{HTTP_USER_AGENT} -strcmatch '*Gecko*'">
+                        AuthType GSSAPI
+                        AuthName "Kerberos Authentication"
+                        GssapiCredStore keytab:/etc/httpd/http.keytab
+                        RewriteEngine On
+                        RewriteCond %{LA-U:REMOTE_USER}(.+(?=@))
+                        RewriteRule .-[E=RU:%1]
+                        RequestHeader set X-Remote-User "%{RU}e" env=RU
+                        Require valid-user
+                </If>
                 ProxyPreserveHost on
                 ProxyPass http://<serveraddress>:8081
                 ProxyPassReverse http://<serveraddress>:8081
