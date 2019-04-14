@@ -1,4 +1,4 @@
-# Nexus SSO Guide - WIP
+# Nexus SSO Guide
 
 ## Steps
 1. **Configure LDAP**  
